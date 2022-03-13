@@ -1,0 +1,6 @@
+Sleep(500)
+ControlFocus("Open","","Edit1")
+Sleep(500)
+ControlSetText("Open","","Edit1","D:\KHUSHBU\TESTING\PROJECTS\fileupload.txt")
+Sleep(500)
+ControlClick("Open","","Button1")
