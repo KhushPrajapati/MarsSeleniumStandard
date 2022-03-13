@@ -33,6 +33,7 @@
     <PackageReference Include="SharpZipLib.NETStandard" Version="1.0.7" />
     <PackageReference Include="System.Buffers" Version="4.5.1" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
     <PackageReference Include="WebDriver.ChromeDriver.win32" Version="98.0.4758.48" />
   </ItemGroup>
 

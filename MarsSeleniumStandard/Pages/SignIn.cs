@@ -18,6 +18,9 @@ namespace MarsFramework.Pages
         }
 
         #region  Initialize Web Elements 
+        //Go to the Link
+        private IWebElement Url { get; set; }
+
         //Finding the Sign Link
         [FindsBy(How = How.XPath, Using = "//a[contains(text(),'Sign')]")]
         private IWebElement SignIntab { get; set; }
