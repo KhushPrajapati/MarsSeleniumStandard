@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MarsFramework.Pages;
 using NUnit.Framework;
+#nullable disable
 
 namespace MarsFramework.Test
 {

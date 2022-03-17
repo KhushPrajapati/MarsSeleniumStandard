@@ -79,7 +79,7 @@ namespace MarsFramework.Config {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to D:\KHUSHBU\TESTING\PROJECTS\MarsSeleniumStandard\MarsSeleniumStandard\MarsSeleniumStandard\WorkSample\Samplefile.
+        ///   Looks up a localized string similar to D:\KHUSHBU\TESTING\PROJECTS\fileupload.txt.
         /// </summary>
         internal static string FilePath {
             get {

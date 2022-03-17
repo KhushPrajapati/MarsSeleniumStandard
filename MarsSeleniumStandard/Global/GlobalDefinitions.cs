@@ -10,6 +10,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using Excel;
 #nullable disable
 
 namespace MarsFramework.Global
@@ -51,12 +52,12 @@ namespace MarsFramework.Global
                     var wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
                     wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.LinkText(value)));
                 }
-        }
+            }
             catch (Exception ex)
             {
                 Assert.Fail("Test faied waiting for an webelement to be visible", ex.Message);
             }
-}
+        }
 
 
         //generic reusable wait function- ElementIsVisible
@@ -89,12 +90,12 @@ namespace MarsFramework.Global
                     var wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
                     wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.LinkText(value)));
                 }
-        }
+            }
             catch (Exception ex)
             {
                 Assert.Fail("Test faied waiting for an webelement to be visible", ex.Message);
             }
-}
+        }
         public static void WaitForElementClickable(IWebDriver driver, string key, string value, int seconds)
         {
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
@@ -129,27 +130,9 @@ namespace MarsFramework.Global
 
         #endregion
 
-        //#region AutoItX3
-        //public static void AutoItX3 (IWebDriver driver)
-        //{
-        //    driver.Navigate().GoToUrl("http://localhost:5000/Home/ServiceListing");
-        //    driver.FindElement(By.XPath("//*[@id='service - listing - section']/div[2]/div/form/div[9]/div/div[2]/section/div/label/div/span/i")).Click();
-        //}
-
-        //#endregion  
-
         #region Excel 
         public class ExcelLib
         {
-            static List<Datacollection> dataCol = new List<Datacollection>();
-
-            public class Datacollection
-            {
-                public int rowNumber { get; set; }
-                public string colName { get; set; }
-                public string colValue { get; set; }
-            }
-
             public static void ClearData()
             {
                 dataCol.Clear();
@@ -159,28 +142,53 @@ namespace MarsFramework.Global
             private static DataTable ExcelToDataTable(string fileName, string sheetName)
             {
                 // Open file and return as Stream
-                using (var stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
+                using (System.IO.FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
                 {
-                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    //Create openxmlreader via ExcelReaderFactory
+                    using (IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream))
                     {
+                        //Set first row as Column Name
+                        excelReader.IsFirstRowAsColumnNames = true;
 
-                        var result = reader.AsDataSet(new ExcelDataSetConfiguration()
-                        {
-                            ConfigureDataTable = (data) => new ExcelDataTableConfiguration()
-                            {
-                                UseHeaderRow = true
-                            }
-                        });
+                        //Return as dataset
+                        DataSet result = excelReader.AsDataSet();
+
                         //Get all the tables
-                        var table = result.Tables;
+                        DataTableCollection table = result.Tables;
 
                         // store it in data table
-                        var resultTable = table[sheetName];
+                        DataTable resultTable = table[sheetName];
                         return resultTable;
                     }
                 }
             }
 
+            static List<Datacollection> dataCol = new List<Datacollection>();
+
+            public static void PopulateInCollection(string fileName, string SheetName)
+            {
+                //ExcelLib.ClearData();
+                DataTable table = ExcelToDataTable(fileName, SheetName);
+
+                //Iterate through the rows and columns of the Table
+                for (int row = 1; row <= table.Rows.Count; row++)
+                {
+                    for (int col = 0; col < table.Columns.Count; col++)
+                    {
+                        Datacollection dtTable = new Datacollection()
+                        {
+                            rowNumber = row,
+                            colName = table.Columns[col].ColumnName,
+                            colValue = table.Rows[row - 1][col].ToString()
+                        };
+
+
+                        //Add all the details for each row
+                        dataCol.Add(dtTable);
+                    }
+                }
+
+            }
             public static string ReadData(int rowNumber, string columnName)
             {
                 try
@@ -205,59 +213,40 @@ namespace MarsFramework.Global
                     return null;
                 }
             }
-
-            public static void PopulateInCollection(string fileName, string SheetName)
-            {
-                ExcelLib.ClearData();
-                DataTable table = ExcelToDataTable(fileName, SheetName);
-
-                //Iterate through the rows and columns of the Table
-                for (int row = 1; row <= table.Rows.Count; row++)
-                {
-                    for (int col = 0; col < table.Columns.Count; col++)
-                    {
-                        Datacollection dtTable = new Datacollection()
-                        {
-                            rowNumber = row,
-                            colName = table.Columns[col].ColumnName,
-                            colValue = table.Rows[row - 1][col].ToString()
-                        };
-
-
-                        //Add all the details for each row
-                        dataCol.Add(dtTable);
-
-                    }
-                }
-
-            }
         }
 
+        public class Datacollection
+        {
+            public int rowNumber { get; set; }
+            public string colName { get; set; }
+            public string colValue { get; set; }
+        }
         #endregion
 
         #region screenshots
         public class SaveScreenShotClass
-        {
-            public static string SaveScreenshot(IWebDriver driver, string ScreenShotFileName) // Definition
             {
-                var folderLocation = (Base.ScreenshotPath);
-
-                if (!System.IO.Directory.Exists(folderLocation))
+                public static string SaveScreenshot(IWebDriver driver, string ScreenShotFileName) // Definition
                 {
-                    System.IO.Directory.CreateDirectory(folderLocation);
+                    var folderLocation = (Base.ScreenshotPath);
+
+                    if (!System.IO.Directory.Exists(folderLocation))
+                    {
+                        System.IO.Directory.CreateDirectory(folderLocation);
+                    }
+
+                    var screenShot = ((ITakesScreenshot)driver).GetScreenshot();
+                    var fileName = new StringBuilder(folderLocation);
+
+                    fileName.Append(ScreenShotFileName);
+                    fileName.Append(DateTime.Now.ToString("_dd-mm-yyyy_mss"));
+                    //fileName.Append(DateTime.Now.ToString("dd-mm-yyyym_ss"));
+                    fileName.Append(".jpeg");
+                    screenShot.SaveAsFile(fileName.ToString(), ScreenshotImageFormat.Jpeg);
+                    return fileName.ToString();
                 }
-
-                var screenShot = ((ITakesScreenshot)driver).GetScreenshot();
-                var fileName = new StringBuilder(folderLocation);
-
-                fileName.Append(ScreenShotFileName);
-                fileName.Append(DateTime.Now.ToString("_dd-mm-yyyy_mss"));
-                //fileName.Append(DateTime.Now.ToString("dd-mm-yyyym_ss"));
-                fileName.Append(".jpeg");
-                screenShot.SaveAsFile(fileName.ToString(), ScreenshotImageFormat.Jpeg);
-                return fileName.ToString();
             }
-        }
-        #endregion
+            #endregion
+        
     }
 }

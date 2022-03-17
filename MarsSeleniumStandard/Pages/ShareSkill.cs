@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
+using AutoItX3Lib;
 
 
 namespace MarsFramework.Pages
@@ -94,13 +95,13 @@ namespace MarsFramework.Pages
         [FindsBy(How = How.XPath, Using = "//input[@placeholder='Amount']")]
         private IWebElement CreditAmount { get; set; }
 
-        //Click on Active/Hidden option
-        [FindsBy(How = How.XPath, Using = "//form/div[10]/div[@class='twelve wide column']/div/div[@class = 'field']")]
-        private IWebElement ActiveOption { get; set; }
-
         //Click on WorkSample upload
         [FindsBy(How = How.XPath, Using = "//*[@id='service-listing-section']/div[2]/div/form/div[9]/div/div[2]/section/div/label/div/span/i")]
         private IWebElement WorkSample { get; set; }
+
+        //Click on Active/Hidden option
+        [FindsBy(How = How.XPath, Using = "//form/div[10]/div[@class='twelve wide column']/div/div[@class = 'field']")]
+        private IWebElement ActiveOption { get; set; }
 
         //Click on Save button
         [FindsBy(How = How.XPath, Using = "//input[@value='Save']")]
@@ -134,12 +135,23 @@ namespace MarsFramework.Pages
             subcategorySelect.SelectByText(GlobalDefinitions.ExcelLib.ReadData(2, "SubCategory"));
 
             //Adding Tags
-            Tags.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Tag"));
+            Tags.Click();
+            Thread.Sleep(2000);
+            Tags.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Tags"));
             Tags.SendKeys(Keys.Enter);
+            Thread.Sleep(3000);
+
+            //Select ServiceType
+            ServiceTypeOptions.Click();
+            Thread.Sleep(1000);
+
+            //Select Loaction Type
+            LocationTypeOption.Click();
+            Thread.Sleep(1000);
 
             //Reading data for Service Type and Location Type
-            ServiceTypeOptions.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "ServiceType"));
-            LocationTypeOption.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "LocationType"));
+            //ServiceTypeOptions.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "ServiceType"));
+            //LocationTypeOption.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "LocationType"));
 
             //Reading data for Available days
             string day = GlobalDefinitions.ExcelLib.ReadData(2, "Selectday");
@@ -154,27 +166,42 @@ namespace MarsFramework.Pages
             MonEndTime.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Endtime"));
 
             //SkillTrade option
-            SkillExchange.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Skill-Exchenge"));
+            Thread.Sleep(3000);
+            SkillTradeOption.Click();
+
+            //Enter Skill Exchange
+            Thread.Sleep(3000);
+            SkillExchange.Click();
+            Thread.Sleep(2000);
+            SkillExchange.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Skill-Exchange"));
             SkillExchange.SendKeys(Keys.Enter);
+            Thread.Sleep(2000);
+
+            //Enter Credit amount
+            //CreditAmount.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Credit"));
+            //Thread.Sleep(2000);
 
             //WorkSample upload
+            //Thread.Sleep(3000);
             WorkSample.Click();
-            AutoItX3 autoIt = new AutoItX3();
+            AutoItX3 autoIt = new();
             autoIt.WinActivate("Open");
-            Thread.Sleep(1000);
-            autoIt.Send(Base.FilePath);
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
+            autoIt.Send(@"D:\KHUSHBU\TESTING\PROJECTS\fileupload.txt");
+            //autoIt.Send(Base.FilePath);
+            Thread.Sleep(3000);
             autoIt.Send("{ENTER}");
 
-            Thread.Sleep(1000);
-            ActiveOption.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Active"));
+            Thread.Sleep(3000);
+            ActiveOption.Click();
+            //ActiveOption.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Active"));
             Save.Click();
 
             //Checking for shareskill updated successfully
             string error = Popuperror.Text;
             if (error == "Please complete the form correctly.")
             {
-                Console.WriteLine(error);
+                Console.WriteLine("Error");
             }
             else
             {
