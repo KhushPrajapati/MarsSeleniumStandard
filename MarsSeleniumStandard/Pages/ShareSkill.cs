@@ -96,7 +96,7 @@ namespace MarsFramework.Pages
         private IWebElement CreditAmount { get; set; }
 
         //Click on WorkSample upload
-        [FindsBy(How = How.XPath, Using = "//*[@id='service-listing-section']/div[2]/div/form/div[9]/div/div[2]/section/div/label/div/span/i")]
+        [FindsBy(How = How.CssSelector, Using = "#service-listing-section > div.ui.container > div > form > div:nth-child(9) > div > div.twelve.wide.column > section > div > label > div > span > i")]
         private IWebElement WorkSample { get; set; }
 
         //Click on Active/Hidden option
@@ -149,10 +149,6 @@ namespace MarsFramework.Pages
             LocationTypeOption.Click();
             Thread.Sleep(1000);
 
-            //Reading data for Service Type and Location Type
-            //ServiceTypeOptions.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "ServiceType"));
-            //LocationTypeOption.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "LocationType"));
-
             //Reading data for Available days
             string day = GlobalDefinitions.ExcelLib.ReadData(2, "Selectday");
             if (day == "Mon")
@@ -179,17 +175,15 @@ namespace MarsFramework.Pages
 
             //Enter Credit amount
             //CreditAmount.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Credit"));
-            //Thread.Sleep(2000);
 
             //WorkSample upload
-            //Thread.Sleep(3000);
             WorkSample.Click();
-            AutoItX3 autoIt = new();
-            autoIt.WinActivate("Open");
+            AutoItX3 autoIt = new AutoItX3();
+            autoIt.Send("Open");
             Thread.Sleep(5000);
-            autoIt.Send(@"D:\KHUSHBU\TESTING\PROJECTS\fileupload.txt");
             //autoIt.Send(Base.FilePath);
-            Thread.Sleep(3000);
+            autoIt.Send(@"C:\Users\Khushbu Prajapati\Documents\Licence.pdf");
+            Thread.Sleep(4000);
             autoIt.Send("{ENTER}");
 
             Thread.Sleep(3000);

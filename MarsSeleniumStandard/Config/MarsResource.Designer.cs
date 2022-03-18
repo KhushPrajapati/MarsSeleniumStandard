@@ -70,7 +70,7 @@ namespace MarsFramework.Config {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to D:\KHUSHBU\TESTING\PROJECTS\MarsSeleniumStandard\MarsSeleniumStandard\MarsSeleniumStandard\ExcelData\TestData.xlsx.
+        ///   Looks up a localized string similar to D:\KHUSHBU\TESTING\PROJECTS\MarsSeleniumStandard\MarsSeleniumStandard\MarsSeleniumStandard\ExcelData\ShareSkill.xlsx.
         /// </summary>
         internal static string ExcelPath {
             get {
@@ -79,7 +79,7 @@ namespace MarsFramework.Config {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to D:\KHUSHBU\TESTING\PROJECTS\fileupload.txt.
+        ///   Looks up a localized string similar to C:\Users\Khushbu Prajapati\Documents\Licence.pdf.
         /// </summary>
         internal static string FilePath {
             get {
