@@ -41,15 +41,15 @@ namespace MarsFramework.Test
                 Assert.That(firstskilltitle == expectedtitle, "title doest not match");
             }
 
-            //[Test, Order(4)]
-            //public void d_deleteListings()
-            //{
-            //    ManageListings managelistings = new ManageListings();
-            //    string message = managelistings.deleteListings();
-            //    string actualmessage = managelistings.getpopupmessage();
-            //    Assert.AreEqual(message, actualmessage);
+            [Test, Order(4)]
+            public void d_deleteListings()
+            {
+                ManageListings managelistings = new ManageListings();
+                string message = managelistings.deleteListings();
+                string actualmessage = managelistings.getpopupmessage();
+                Assert.AreEqual(message, actualmessage);
 
-            //}
+            }
         }
     }
 }
