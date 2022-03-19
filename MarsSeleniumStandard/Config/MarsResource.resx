@@ -122,7 +122,7 @@
     <comment>1 for firefox and 2 for Chrome</comment>
   </data>
   <data name="ExcelPath" xml:space="preserve">
-    <value>D:\KHUSHBU\TESTING\PROJECTS\MarsSeleniumStandard\MarsSeleniumStandard\MarsSeleniumStandard\ExcelData\TestData.xlsx</value>
+    <value>D:\KHUSHBU\TESTING\PROJECTS\MarsSeleniumStandard\MarsSeleniumStandard\MarsSeleniumStandard\ExcelData\ShareSkill.xlsx</value>
   </data>
   <data name="FilePath" xml:space="preserve">
     <value>C:\Users\Khushbu Prajapati\Documents\Licence.pdf</value>
