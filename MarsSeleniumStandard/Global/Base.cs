@@ -71,7 +71,7 @@ namespace MarsFramework.Global
             test = new ExtentTest("", "");
             test.Log(LogStatus.Info, "Image example: " + img);
             // end test. (Reports)
-            extent.EndTest(test);
+            //extent.EndTest(test);
             // calling Flush writes everything to the log file (Reports)
             extent.Flush();
             // Close the driver :)
