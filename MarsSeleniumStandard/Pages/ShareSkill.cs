@@ -221,10 +221,10 @@ namespace MarsFramework.Pages
 
             //Clearing the textbox
             Title.Clear();
-            Description.Clear();
+            Title.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Title"));
 
             //reading the values from excel
-            Title.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Title"));
+            Description.Clear();
             Description.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Description"));
 
             //click on category and subcategory
@@ -239,9 +239,11 @@ namespace MarsFramework.Pages
             RemoveTag.Click();
 
             //Adding tags
+            Tags.Click();
+            Thread.Sleep(2000);
             Tags.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Tags"));
             Tags.SendKeys(Keys.Enter);
-            //Tags.Click();
+            Thread.Sleep(3000);
 
             //Servicetype and location type
             //LocationTypeOption.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "LocationType"));
